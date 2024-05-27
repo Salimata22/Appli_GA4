@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "projet-analyse-donne-ga4",
+  "private_key_id": "61fe360ce4eaf8139991a6006b46991cbc2f17de",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCwILjPwk9XE0Sq\n6C24kCl/cmyPz7c/Jdhn/XWPC33SejHp5C0XTC+p+TcsnBTNe/g06CmAaRaArVBO\nuiP2HNUYUxDLu7iJpfXD3WoiZqZvBUrBqZLlTtXNB6OM8BwalK7yc5UNqOcD93+D\nc5YOyhR/a8g3NZXh3/eBQu0vy37D6VQOBqqh3YmheURpy5jImmHZRnFJTDBmT2lo\nZMVdA9WXTSYyTG1k2v+EGqGuB2DnhQsbHo/ieX0T63TnDpknD56oO+kuwdcHuYaB\ndoU05CVFf+dmzV6Fw2lv1JH6MaeBJHF5+fBx5ifBRLq6vuJgQwXDSco6gFOyZ8h6\nen8tjSq9AgMBAAECggEAK4kTFavCn9Pv88zrTEU6NLoMcqnV8mKA8Qd6MQ8WnVm+\nD8HqkWkwGPQ0uq6kB7zed/lxFMAlI05z3Nnu/K1Y0SfrLWjr7v5aVv1aeEFmX2fv\n+BnZ6RuJBqKePz60u69H5T9DtzoqTFU3rD78dxBla6+xMFBrCYeqbsWjyl4jKfqQ\nXmYERJQ06rXTEnfmzMO3lvzEL8p7EytstlMOyE3RtqwQzVZFaIPuemrcYEnOvTzO\n8n/7uTIWIvmRGJZegInyC05EhdxnwaH+mUkJ8hiC4LA+g+8kwuvturwDznR/QjnC\ntgKqTu4qSQ2dtky7JT6hlNU3/0gHq8jywcLRp4ptUwKBgQDZi89r9NWPAiDJEcy1\nzxTtUEdEul54prwr+nlV7ynV/eM5sEVUCvY7k/RLFuCFyP1JVZYRIbHgrV9jlJ3i\nJWpXjpxQdBDQRdcj0HXStO2mlmIXV4TGKKiYO/oZm6wTlFMaBzZVlO5Y31ER33Bq\ncEWxu1HkMPUsixMrv2cZkhciZwKBgQDPQrCRxC7SnlqofPeS0cjVW0wBWiThTsgU\nOiUZO+umalkgL2SV37k2aMCoShPudBY1sn3hQgj9jFxDOa99npPkps9dHlSNtMOO\n5VD08vxBZaOApaNnXZd17A6EPuElCkQosukFc9zqfq3empYett+Q7argrhltftpy\nYijDitG7OwKBgG9FXK26SDVigER4Dz37EpgjlKBptwJ9Pgg8kC1NLBfhSYTrTTqk\ndLeagLybkfG8ERmeZiiTFHl4FC9KB8txGch5ECjyhNsSre0KpglFM70edEO+JxJ4\nH2vmWZEZl9VX632HrNnvWE4qwzuiDszSakNzLXrLM8w5wm+A8goZOC4HAoGAQZ8t\n5Jkm8gytS5d1k4jUe6kSYYM3Fhcphi36vQiZzfDyExyuTj2tmKqGBUKfGOqsdYf0\nDzQnQJAGTkqfY7invseJ9EO8JbnMCRxWC5g7gkE6CWtoVzvszqtU1U5LXrznY7Nx\n0AYlNiGxzz9GtKbWFj8J0WWOK3r0ky69FVyIly0CgYB+WtEHNuRSUV586q1sQEJ8\nv0Wdb/qsBXAJKfMYM/y8zdD3twG48jhu5WcnRwunWGksVp3iOSHVq2/Z8NINyDrr\nxxxHZ3hnKovjG4y0vrijjBHHC212I+xoDwGvIHQKQ8RRUL6udQlVxkHhO4w0x0Bv\n9YublRaVOQ92NaVGLMTkSg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "phytonprojet@projet-analyse-donne-ga4.iam.gserviceaccount.com",
+  "client_id": "105689942314185872704",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/phytonprojet%40projet-analyse-donne-ga4.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
