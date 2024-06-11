@@ -3,6 +3,7 @@ import requests
 import cv2 
 r = requests
 cv = cv2
+plot_placeholder = st.empty()
 
 def main():
     # Ajout de CSS pour les styles et animations
