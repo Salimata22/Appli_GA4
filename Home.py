@@ -1,4 +1,8 @@
 import streamlit as st
+import requests
+import cv2 
+r = requests
+cv = cv2
 
 def main():
     # Ajout de CSS pour les styles et animations
