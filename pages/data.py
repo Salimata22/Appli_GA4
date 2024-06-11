@@ -25,20 +25,21 @@ KEY_PATH = "google_analytics_api_access_keys.json"
 credentials, project = google.auth.load_credentials_from_file(KEY_PATH)
 # Créer un client GA4
 client = BetaAnalyticsDataClient(credentials=credentials)
-# Paramètres de la requête l'ID de votre propriété GA4
+# Paramètres de la requête l'ID de la propriété GA4
 property_id = '293700220'
 
 
 
 
 # le titre de la page data
-st.header('Les données actives sur GA4')
+st.header('LES DONNEES  sur GA4')
 
 
 # Widgets de sélection de date dans la barre latérale
 st.sidebar.header("Sélection de la Plage de Dates")
 date_debut = st.sidebar.date_input("Date de début", datetime.now().date() - pd.to_timedelta("30day"))
 date_fin = st.sidebar.date_input("Date de fin", datetime.now().date())
+
 
 
 
@@ -63,7 +64,7 @@ def format_report(request):
                           index = row_index_named, columns = metric_names)
     return output
 
-menu = st.sidebar.radio("DATA", ('Pays', 'Villes', 'Pages Vues', 'Sessions', 'lesDimension'))
+menu = st.sidebar.selectbox("DATA", ('Pays', 'Villes', 'Pages Vues', 'Sessions', 'lesDimension'))
 
 
 
@@ -158,7 +159,68 @@ if menu == 'Pays':
 
 
         
-elif menu == 'Villes':
+if menu == 'Villes':
+
+    request = RunReportRequest(
+        property=f'properties/{property_id}',
+        dimensions=[Dimension(name='city')],
+        metrics=[Metric(name='activeUsers')],
+        date_ranges=[DateRange(start_date=date_debut.strftime("%Y-%m-%d"), end_date=date_fin.strftime("%Y-%m-%d"))],)
+
+    # Exécuter la requête
+    response = client.run_report(request)
+
+    # Créer une liste pour stocker les données
+    data1 = []
+
+    # Extraire les données de la réponse et les stocker dans la liste
+    for row in response.rows:
+        data1.append({
+            'city': row.dimension_values[0].value,
+            'activeUsers': int(row.metric_values[0].value)  # Convertir en entier
+        })
+
+    # Convertir la liste en DataFrame pandas
+    nbres_users_by_city = pd.DataFrame(data1)
+
+    # Afficher le DataFrame dans Streamlit
+    st.subheader('Le nombre d utilisateurs par ville')
+    st.write(nbres_users_by_city)
+        
+    # La requete pour recuperer les pays par la durée d'engagement
+    request = RunReportRequest(
+        property=f'properties/{property_id}',
+        dimensions=[Dimension(name='city')],
+        metrics=[Metric(name='userEngagementDuration'), Metric(name='activeUsers')],
+        date_ranges=[DateRange(start_date=date_debut.strftime("%Y-%m-%d"), end_date=date_fin.strftime("%Y-%m-%d"))], )
+
+    # Exécuter la requête
+    response = client.run_report(request)
+
+    # Créer une liste pour stocker les données
+    data2 = []
+
+    # Extraire les données de la réponse et les stocker dans la liste
+    for row in response.rows:
+        city = row.dimension_values[0].value
+        engagement_duration = float(row.metric_values[0].value)  # userEngagementDuration
+        active_users = int(row.metric_values[1].value)  # activeUsers
+        
+        # Calculer la durée d'engagement moyenne
+        average_engagement_time = engagement_duration / active_users if active_users > 0 else 0
+
+        data2.append({
+            'country': city,
+            'averageEngagementTime': average_engagement_time  # En secondes
+        })
+
+    # Convertir la liste en DataFrame pandas
+    temps_engagement_by_city = pd.DataFrame(data2)
+
+    # Afficher le DataFrame dans Streamlit
+    st.subheader('Le temps d engagement par ville')
+    st.write(temps_engagement_by_city)
+
     request = RunReportRequest(
         property='properties/'+property_id,
         dimensions=[Dimension(name="month"), 
@@ -186,7 +248,44 @@ elif menu == 'Villes':
 
 
 
-elif menu == 'Pages Vues':
+if menu == 'Pages Vues':
+
+    # La requete pour recuperer les pagePath par la durée d'engagement
+    request = RunReportRequest(
+        property=f'properties/{property_id}',
+        dimensions=[Dimension(name='pagePath')],
+        metrics=[Metric(name='userEngagementDuration'), Metric(name='activeUsers')],
+        date_ranges=[DateRange(start_date=date_debut.strftime("%Y-%m-%d"), end_date=date_fin.strftime("%Y-%m-%d"))], )
+
+    # Exécuter la requête
+    response = client.run_report(request)
+
+    # Créer une liste pour stocker les données
+    data3 = []
+
+    # Extraire les données de la réponse et les stocker dans la liste
+    for row in response.rows:
+        city = row.dimension_values[0].value
+        engagement_duration = float(row.metric_values[0].value)  # userEngagementDuration
+        active_users = int(row.metric_values[1].value)  # activeUsers
+        
+        # Calculer la durée d'engagement moyenne
+        average_engagement_time = engagement_duration / active_users if active_users > 0 else 0
+
+        data3.append({
+            'pagePath': city,
+            'averageEngagementTime': average_engagement_time  # En secondes
+        })
+
+    # Convertir la liste en DataFrame pandas
+    temps_engagement_by_pagePath = pd.DataFrame(data3)
+
+    # Afficher le DataFrame dans Streamlit
+    st.subheader('Le temps d engagement par pagePath')
+    st.write(temps_engagement_by_pagePath)
+
+
+
         # Requetes sur les pages vue et les scroll
     request = RunReportRequest(
         property=f'properties/{property_id}',
@@ -198,17 +297,17 @@ elif menu == 'Pages Vues':
     response = client.run_report(request)
 
     # Créer une liste pour stocker les données
-    data = []
+    data4 = []
 
     # Extraire les données de la réponse et les stocker dans la liste
     for row in response.rows:
-        data.append({
+        data4.append({
             'pagePath': row.dimension_values[0].value,
             'screenPageViews': int(row.metric_values[0].value)  # Convertir en entier
         })
 
     # Convertir la liste en DataFrame pandas
-    page_view = pd.DataFrame(data)
+    page_view = pd.DataFrame(data4)
 
     # Afficher le DataFrame dans Streamlit
     st.subheader('Les pages vue par scroll ')
@@ -227,21 +326,21 @@ elif menu == 'Pages Vues':
     response = client.run_report(request)
 
     # Créer une liste pour stocker les données
-    data = []
+    data5 = []
 
     # Extraire les données de la réponse et les stocker dans la liste
     for row in response.rows:
-        data.append({
+        data5.append({
             'pagePath': row.dimension_values[0].value,
             'activeUsers': int(row.metric_values[0].value)  # Convertir en entier
         })
 
     # Convertir la liste en DataFrame pandas
-    Sessions_view = pd.DataFrame(data)
+    users_view = pd.DataFrame(data5)
 
     # Afficher le DataFrame dans Streamlit
     st.subheader('Les pages vue par utilisateurs')
-    st.write(Sessions_view)
+    st.write(users_view)
 
 
 
@@ -304,7 +403,7 @@ elif menu == 'Pages Vues':
 
 
 
-elif menu == 'Sessions':
+if menu == 'Sessions':
 
 
         # Requetes sur les 'Sessions' par utilisateur
@@ -318,21 +417,56 @@ elif menu == 'Sessions':
     response = client.run_report(request)
 
     # Créer une liste pour stocker les données
-    data = []
+    data6 = []
 
     # Extraire les données de la réponse et les stocker dans la liste
     for row in response.rows:
-        data.append({
+        data6.append({
             'sessionMedium': row.dimension_values[0].value,
             'activeUsers': int(row.metric_values[0].value)  # Convertir en entier
         })
 
     # Convertir la liste en DataFrame pandas
-    Sessions_view = pd.DataFrame(data)
+    Sessions_view = pd.DataFrame(data6)
 
     # Afficher le DataFrame dans Streamlit
     st.subheader('Les Sessions pas utilisateurs ')
     st.write(Sessions_view)
+
+
+    # La requete pour recuperer les sessionMedium par la durée d'engagement
+    request = RunReportRequest(
+        property=f'properties/{property_id}',
+        dimensions=[Dimension(name='sessionMedium')],
+        metrics=[Metric(name='userEngagementDuration'), Metric(name='activeUsers')],
+        date_ranges=[DateRange(start_date=date_debut.strftime("%Y-%m-%d"), end_date=date_fin.strftime("%Y-%m-%d"))], )
+
+    # Exécuter la requête
+    response = client.run_report(request)
+
+    # Créer une liste pour stocker les données
+    data7 = []
+
+    # Extraire les données de la réponse et les stocker dans la liste
+    for row in response.rows:
+        city = row.dimension_values[0].value
+        engagement_duration = float(row.metric_values[0].value)  # userEngagementDuration
+        active_users = int(row.metric_values[1].value)  # activeUsers
+        
+        # Calculer la durée d'engagement moyenne
+        average_engagement_time = engagement_duration / active_users if active_users > 0 else 0
+
+        data7.append({
+            'pagePath': city,
+            'averageEngagementTime': average_engagement_time  # En secondes
+        })
+
+    # Convertir la liste en DataFrame pandas
+    temps_engagement_by_sessionMedium = pd.DataFrame(data7)
+
+    # Afficher le DataFrame dans Streamlit
+    st.subheader('Le temps d engagement par session')
+    st.write(temps_engagement_by_sessionMedium)
 
 
     # Requetes sur les 'Sessions' par mois
@@ -412,8 +546,7 @@ elif menu == 'Sessions':
 
 
 
-
-elif menu == 'lesDimension':
+if menu == 'lesDimension':
         # Définir les dimensions et les métriques que vous souhaitez récupérer
     dimensions = [
     #     Dimension(name='userPseudoId'),  # Utiliser userPseudoId à la place de clientId
@@ -442,17 +575,23 @@ elif menu == 'lesDimension':
     response = client.run_report(request)
 
     # Créer une liste pour stocker les données
-    data = []
+    data8 = []
 
     # Extraire les données de la réponse et les stocker dans la liste
     for row in response.rows:
         record = {dimension.name: row.dimension_values[idx].value for idx, dimension in enumerate(dimensions)}
         record.update({metric.name: float(row.metric_values[idx].value) for idx, metric in enumerate(metrics)})
-        data.append(record)
+        data8.append(record)
 
     # Convertir la liste en DataFrame pandas
-    df = pd.DataFrame(data)
+    df = pd.DataFrame(data8)
 
     # Afficher le DataFrame dans Streamlit
     st.subheader('Toutes les dimension par metrics')
     st.write(df)
+
+
+
+
+
+    
